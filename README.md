@@ -12,6 +12,7 @@ conda activate emotion-voice
 3. Install packages from requirements.txt
 pip install -r requirements.txt
 pip install streamlit
+pip install streamlit-webrtc
 
 # Running the Program
 
