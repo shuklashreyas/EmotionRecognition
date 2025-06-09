@@ -1,21 +1,36 @@
 # EmotionRecognition
-Build a classifier that detects emotions like happiness, sadness, or anger from short voice recordings using audio features (e.g., MFCCs) and classical ML or CNN models.
+
+Build a multiclass emotion‐recognition system that classifies six emotional states—anger, disgust, fear, happiness, neutral, and sadness—from short voice recordings by extracting audio features (e.g., MFCCs and mel-spectrograms) and training four separate models (SVM, KNN, MLP, and CNN) to compare their performance.
+
+# Project Structure
+
+EmotionRecognition/
+├── Data/ # Raw audio files and CSV label files, CREAMA-D
+├── Utils/ # Feature‐extraction and preprocessing helpers
+├── Models/ # Model definitions (e.g., cnn_model.py, svm_model.py, etc.)
+├── Training/ # Training scripts for each model
+│ ├── cnn_train.py # Your CNN training loop
+│ ├── svm_train.py # SVM training script
+│ ├── knn_train.py # KNN training script
+│ └── mlp_train.py # MLP training script
+├── Trained_Models/ # Saved model weights (.pth, .pkl)
+├── Frontend/ # Streamlit app code
+├── Test/ # Unit and integration tests
+├── requirements.txt # Python dependencies
+└── README.md # Project overview and instructions
 
 # Setup
 
-1. Create a new conda environment
 conda create -n emotion-voice python=3.10 -y
-
-2. Activate it
 conda activate emotion-voice
 
-3. Install packages from requirements.txt
 pip install -r requirements.txt
 pip install streamlit
 pip install streamlit-webrtc
 
 # Running the Program
 
-1. cd Frontend
-2. streamlit run app.py
+cd Frontend
+streamlit run app.py
 
+http://localhost:8501
