@@ -7,18 +7,19 @@ import av
 # Set page configuration
 st.set_page_config(page_title="🎙️ Voice Emotion Detector", layout="centered")
 
-st.markdown("<h1 style='text-align:center; color:#4CAF50;'>🎙️ Emotion Recognition from Voice</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#4CAF50;'>🎙️ Emotion Recognition from Voice</h1>",
+            unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; font-size:18px;'>Upload or record your voice to detect the emotion expressed.</p>", unsafe_allow_html=True)
 
-# ------------------------------
-# Upload Section
-# ------------------------------
-st.markdown("<h3 style='color:#3F51B5;'>📁 Upload an Audio File</h3>", unsafe_allow_html=True)
+
+st.markdown("<h3 style='color:#3F51B5;'>📁 Upload an Audio File</h3>",
+            unsafe_allow_html=True)
 uploaded_file = st.file_uploader("Upload a .wav file", type=["wav"])
 
 if uploaded_file:
     st.audio(uploaded_file, format='audio/wav')
-    model_choice = st.selectbox("🎛️ Choose a model:", ["SVM", "CNN", "MLP", "KNN"], key="upload_model")
+    model_choice = st.selectbox("🎛️ Choose a model:", [
+                                "SVM", "CNN", "MLP", "KNN"], key="upload_model")
     # TODO: Replace with real model predictions
     predicted_emotion = {
         "SVM": "Happy",
@@ -40,10 +41,9 @@ if uploaded_file:
         }
         st.table(comparison_data)
 
-# ------------------------------
-# Recording Section
-# ------------------------------
-st.markdown("<h3 style='color:#3F51B5;'>🎤 Record Your Voice</h3>", unsafe_allow_html=True)
+
+st.markdown("<h3 style='color:#3F51B5;'>🎤 Record Your Voice</h3>",
+            unsafe_allow_html=True)
 
 
 class AudioRecorder(AudioProcessorBase):
@@ -63,7 +63,8 @@ ctx = webrtc_streamer(
 )
 
 if ctx.audio_processor:
-    model_choice_record = st.selectbox("🎛️ Choose a model:", ["SVM", "CNN", "MLP", "KNN"], key="record_model")
+    model_choice_record = st.selectbox(
+        "🎛️ Choose a model:", ["SVM", "CNN", "MLP", "KNN"], key="record_model")
 
     if st.button("Save Recording"):
         frames = ctx.audio_processor.recorded_frames
