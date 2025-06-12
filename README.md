@@ -9,10 +9,6 @@ EmotionRecognition/
 ├── Utils/ # Feature‐extraction and preprocessing helpers
 ├── Models/ # Model definitions (e.g., cnn_model.py, svm_model.py, etc.)
 ├── Training/ # Training scripts for each model
-│ ├── cnn_train.py # Your CNN training loop
-│ ├── svm_train.py # SVM training script
-│ ├── knn_train.py # KNN training script
-│ └── mlp_train.py # MLP training script
 ├── Trained_Models/ # Saved model weights (.pth, .pkl)
 ├── Frontend/ # Streamlit app code
 ├── Test/ # Unit and integration tests
