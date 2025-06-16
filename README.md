@@ -25,15 +25,19 @@ EmotionRecognition/
 
 ## To create a virtual environment copy and paste these commands into the terminal:
 conda create -n emotion-voice python=3.10 -y
+
 conda activate emotion-voice
 ## Next to install dependencies of our program copy and past these commands into the terminal:
 pip install -r requirements.txt
+
 pip install streamlit
+
 pip install streamlit-webrtc
 
 # Running the Program
 ## To run the program copy and paste the two commands into the terminal:
 cd Frontend
+
 streamlit run app.py
 ## This is where we host the website on your computer once the app.py is ran:
 http://localhost:8501
