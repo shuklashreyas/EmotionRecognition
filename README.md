@@ -6,13 +6,21 @@ Build a multiclass emotion‐recognition system that classifies six emotional st
 
 EmotionRecognition/
 ├── Data/ # Raw audio files and CSV label files, CREAMA-D
+
 ├── Utils/ # Feature‐extraction and preprocessing helpers
+
 ├── Models/ # Model definitions (e.g., cnn_model.py, svm_model.py, etc.)
+
 ├── Training/ # Training scripts for each model
+
 ├── Trained_Models/ # Saved model weights (.pth, .pkl)
+
 ├── Frontend/ # Streamlit app code
+
 ├── Test/ # Unit and integration tests
+
 ├── requirements.txt # Python dependencies
+
 └── README.md # Project overview and instructions
 
 # Setup
