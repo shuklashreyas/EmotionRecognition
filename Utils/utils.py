@@ -1,16 +1,45 @@
-import librosa
+import io
 import numpy as np
+import soundfile as sf
+import librosa
 import cv2
+
 
 def load_audio(path, sr=48000, duration=None):
     """
-    Load an audio file as a mono waveform.
-    - path: file path
-    - sr: target sampling rate
-    - duration: max seconds to load (None = full)
+    Load an audio file (or file‐like) into a mono float32 array.
+    - If `path` is a filename str, reads from disk.
+    - If `path` is a file‐like (e.g. BytesIO), soundfile handles it too.
+    Resamples to `sr`. If duration is set, clips to duration (in seconds).
     """
-    y, sr = librosa.load(path, sr=sr, mono=True, duration=duration)
-    return y, sr
+    # 1) Read everything
+    data, sr_native = sf.read(path, dtype='float32', always_2d=False)
+    # 2) To mono
+    if data.ndim > 1:
+        data = np.mean(data, axis=1)
+    # 3) Resample if needed
+    if sr_native != sr:
+        data = librosa.resample(data, orig_sr=sr_native, target_sr=sr)
+    # 4) Trim to duration
+    if duration is not None:
+        max_samples = int(sr * duration)
+        data = data[:max_samples]
+    return data, sr
+
+def extract_mfcc_from_path2(path, sr=48000, n_mfcc=13, duration=None, target_length=130):
+    """
+    Extract MFCCs from an audio file and pad/truncate to `target_length` frames.
+    """
+    y, _ = load_audio(path, sr=sr, duration=duration)
+    # Compute MFCCs: shape (n_mfcc, t)
+    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+    # pad or truncate time‐axis to target_length
+    if mfcc.shape[1] < target_length:
+        pad_width = target_length - mfcc.shape[1]
+        mfcc = np.pad(mfcc, ((0,0),(0,pad_width)), mode='constant')
+    else:
+        mfcc = mfcc[:, :target_length]
+    return mfcc
 
 def extract_mfcc(y, sr, n_mfcc=13):
     """

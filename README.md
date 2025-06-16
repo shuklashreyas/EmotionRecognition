@@ -26,7 +26,6 @@ pip install streamlit-webrtc
 
 # Running the Program
 
-cd Frontend
-streamlit run app.py
+streamlit run Frontend/app.py
 
 http://localhost:8501
