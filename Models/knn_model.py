@@ -7,7 +7,7 @@ import functools
 from Utils.utils import extract_spectrogram_from_path
 from huggingface_hub import hf_hub_download
 
-HF_REPO_ID = "shreyasshukla/emotion-knn-single"
+HF_REPO_ID = "shreyasshukla/emotion-cnn-single"
 HF_FILENAME = "knn.pkl"
 
 @functools.lru_cache(maxsize=1)
@@ -21,7 +21,7 @@ def load_knn_model(model_path: str = None):
         )
     return joblib.load(model_path)
 
-def predict_knn(audio_path: str, model_path: str = None) -> int:
+def predict(audio_path: str, model_path: str = None) -> int:
     knn = load_knn_model(model_path)
     spec = extract_spectrogram_from_path(
         audio_path,
