@@ -21,6 +21,7 @@ def extract_mfcc(y, sr, n_mfcc=13):
 
 def extract_mfcc_from_path(path, sr=48000, n_mfcc=13, duration=None):
     y, sr = load_audio(path, sr, duration)
+    
     return extract_mfcc(y, sr, n_mfcc)
 
 def extract_mel_spectrogram(y, sr, n_mels=128):
@@ -69,3 +70,20 @@ def pad_or_trim(y, sr, max_seconds=3):
     else:
         y = y[:max_len]
     return y
+
+def extract_mfcc_from_path2(path, sr=48000, n_mfcc=13, max_seconds=3):
+    """
+    Load audio from path, pad/trim it to max_seconds,
+    extract MFCC features, normalize them, and return a flattened array.
+    """
+    y, sr = load_audio(path, sr)
+    y = pad_or_trim(y, sr, max_seconds=max_seconds)
+
+    # Extract MFCCs
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+
+    # Normalize
+    mfccs = (mfccs - np.mean(mfccs)) / (np.std(mfccs) + 1e-6)
+
+    # Flatten
+    return mfccs.flatten()
