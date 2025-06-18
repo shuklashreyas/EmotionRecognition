@@ -20,9 +20,14 @@ EmotionRecognition/
 ## Setup
 
 ```bash
+1) Clone repo
+git clone https://github.com/shuklashreyas/EmotionRecognition
+
+2) Create conda environment
 conda create -n emotion-voice python=3.10 -y
 conda activate emotion-voice
 
+3) Install dependencies
 pip install -r requirements.txt
 pip install streamlit
 pip install streamlit-webrtc
@@ -43,6 +48,7 @@ Open your browser and navigate to: http://localhost:8501
 - **Record Audio tab** → Click Start/Stop → Save & Predict → Review your recording + prediction
 
 The interface provides real-time emotion recognition from both uploaded audio files and live recordings, allowing you to test different models and compare their predictions.
+
 
 ## Model Performance
 
@@ -109,19 +115,30 @@ This project uses the **CREMA-D** (Crowdsourced Emotional Multimodal Actors Data
 - 7,442 audio clips from 91 actors
 - 6 emotion categories: anger, disgust, fear, happiness, neutral, sadness
 - Balanced dataset with demographic diversity
+- [Please refer to orginal dataset extracted](https://github.com/CheyneyComputerScience/CREMA-D)
 
 ## Authors
 
-- **[Shreyas Shukla]** - CNN, Code Modularity / Structure
-- **[Pavithra Ponnolu]** - SVM, Research
-- **[Kashvi Mehta]** - MLP, Dataset Extraction
-- **[Josh Len]** - CNN, Research
+- [Shreyas Shukla](https://github.com/shuklashreyas) - CNN, Code Modularity, Frontend
+- [Pavithra Ponnolu](https://github.com/pponn) - SVM, Research
+- [Kashvi Mehta](https://github.com/kashvime) - MLP, Dataset Extraction
+- [Josh Len](https://github.com/Josh-Len) - CNN, Research
 
-## License
+## Demo & Slides & Final Report
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- [Video Demo](https://drive.google.com/file/d/1Bl0TcKuDguN_U-6x9Dm1zW89pRkIFui5/view?usp=sharing)
+- [Google Slideshow Presentation](https://drive.google.com/file/d/1FuzVh6-ys5HXoX531fwhe3_gbTbmYSmK/view?usp=sharing)
+- Final Report
+
+## Future Work
+
+- **Expand Dataset**: Collect noisy, accented, multi-device audio and diverse dialects for greater robustness.
+- **Multi-Modal Fusion**: Integrate audio with video or physiological signals to enrich emotion cues.
+- **On-Device Deployment**: Compress the model for low-latency, real-time inference on mobile/embedded devices.
+  
 
 ## Acknowledgments
 
 - CREMA-D dataset creators for providing high-quality emotional speech data
 - Open-source community for the excellent libraries that made this project possible
+- This project was made during Summer for CS4100 (AI) NEU
