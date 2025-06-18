@@ -41,6 +41,11 @@ streamlit run Frontend/app.py
 
 Open your browser and navigate to: http://localhost:8501
 
+## Frontend View
+
+![Upload Audio Clip](./frontend1.png)
+![Record Audio Clip](./frontend2.png)
+
 ## Usage
 
 ### In your browser:
