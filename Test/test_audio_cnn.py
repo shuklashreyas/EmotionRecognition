@@ -17,7 +17,7 @@ from Models.cnn_model import predict as predict_cnn
 def main(duration=3, sr=48000):
     # 1. Record audio
     print(f"Recording {duration} seconds of audio... Speak now!")
-    recording = sd.rec(int(duration * sr), samplerate=sr, channels=1, dtype='float32')
+    recording = sd.rec(int(duration * sr), samplerate=sr, channels=1, dtype='float32') 
     sd.wait()  # wait until recording is finished
     recording = np.squeeze(recording)
 
@@ -34,9 +34,9 @@ def main(duration=3, sr=48000):
     # 4. Load label encoder and print emotion
     le = joblib.load(os.path.join("Trained_Models", "label_encoder.pkl"))
     emotion = le.inverse_transform([idx])[0]
-    print(f"Predicted emotion: {emotion}")
+    print(f"Predicted emotion: {emotion}") #show the predicted emotion for the given audio from the cnn model
 
-    # Cleanup (optional)
+    # Cleanup 
     # os.remove(tmp_path)
 
 if __name__ == "__main__":
