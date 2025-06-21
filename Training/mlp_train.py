@@ -13,7 +13,7 @@ from multiprocessing import freeze_support
 import librosa
 
 
-# locally import
+# Allow imports from parent folder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Models.mlp_model import MLP
 from Utils.utils import extract_mfcc_from_path 
@@ -21,10 +21,8 @@ from Utils.utils import extract_mfcc_from_path
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def main():
-    # csv path
+    # 1. Load CSV & encode labels
     csv_path = os.path.join("Data", "crema_intended_labels.csv") 
-
-    # load csv into pandas df
     df = pd.read_csv(csv_path) 
 
     # initialize label encoder
@@ -39,7 +37,7 @@ def main():
     encoder_path = os.path.join("Trained_Models", "label_encoder.pkl")
     joblib.dump(label_encode, encoder_path)
 
-    # split data based on label_idx
+    # 2. Split data based on label_idx
     print("Splitting data")
     train_df, val_df = train_test_split(
         df,
@@ -48,6 +46,7 @@ def main():
         random_state=42               
     )
 
+    # 3. Create CremaDatasets and DataLoaders
     # datasets
     print("Creating datasets and dataloaders")
     train_dataset = CremaDataset(train_df)
@@ -64,7 +63,7 @@ def main():
     joblib.dump(input_features, feat_path)
     print(f"Saved input_features = {input_features} → {feat_path}")
 
-
+    # 4. MLP Model setup
     mlp_model = MLP(input_features, hidden_units1= 727,hidden_units2= 147, hidden_units3=30 ).to(device)
     loss_function = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam( mlp_model.parameters(),lr=1e-3, weight_decay=1e-5)   
@@ -76,6 +75,7 @@ def main():
 
     print(f"\nTraining MLP for {num_epochs} epochs...\n")
 
+    # 5. Training loop
     for epoch in range(num_epochs):
         mlp_model.train()
         running_loss = 0.0
@@ -105,15 +105,17 @@ def main():
         val_acc = correct / len(val_loader.dataset)
         print(f"[Epoch {epoch+1}] Validation Accuracy: {val_acc:.4f}")
 
+        # Get the best accuracy and save the model with the best accuracy
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             torch.save(mlp_model.state_dict(), os.path.join("Trained_Models", "mlp.pth"))
             print(f"Saved best model so far! (Val Acc: {val_acc:.4f})")
 
+    # Return the best accuracy
     print("\nTraining finished.")
     print(f"Best Validation Accuracy: {best_val_acc:.4f}")
 
-
+# Crema Dataset
 class CremaDataset(Dataset):
     def __init__(self, dataframe, root_dir="Data"):
         self.data = dataframe.reset_index(drop=True)
