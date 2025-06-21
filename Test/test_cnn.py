@@ -16,6 +16,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from Utils.utils import extract_spectrogram_from_path
 from Models.cnn_model import load_model, DEVICE
 
+#1. Define the Spectrogram Dataset and load the audio spectrograms from the dataset
 class SpectrogramDataset(Dataset):
     def __init__(self, df, root_dir="Data/AudioWAV", sr=48000, target_shape=(128,128)):
         self.df = df.reset_index(drop=True)
@@ -23,9 +24,11 @@ class SpectrogramDataset(Dataset):
         self.sr = sr
         self.target_shape = target_shape
 
+    # return the length of the dataset
     def __len__(self):
         return len(self.df)
 
+    # Get the label associated with the audio spectrogram from the dataset
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
         # Extract relative path after "AudioWAV/"
@@ -59,18 +62,19 @@ def main():
         random_state=42
     )
 
-    # 3. Load saved LabelEncoder and CNN model
+    # 3. Load saved LabelEncoder 
     encoder_path = os.path.join("Trained_Models", "label_encoder.pkl")
     le = joblib.load(encoder_path)
 
+    # 4. Load the CNN model
     model_path = os.path.join("Trained_Models", "cnn.pth")
     model = load_model(model_path, device=DEVICE)
 
-    # 4. Create DataLoader for test set
+    # 5. Create DataLoader for test set
     test_ds = SpectrogramDataset(test_df)
     test_loader = DataLoader(test_ds, batch_size=32, shuffle=False, num_workers=0)
 
-    # 5. Run inference
+    # 6. Run inference
     all_preds, all_labels = [], []
     model.eval()
     with torch.no_grad():
@@ -81,10 +85,11 @@ def main():
             all_preds.extend(preds)
             all_labels.extend(labels.numpy().tolist())
 
-    # 6. Decode labels and print metrics
+    # 7. Decode labels and print metrics
     y_true = le.inverse_transform(all_labels)
     y_pred = le.inverse_transform(all_preds)
 
+    # Print the classification report and confusion matrix based on the model's predictions
     print("=== Classification Report ===")
     print(classification_report(y_true, y_pred))
     print("\n=== Confusion Matrix ===")
