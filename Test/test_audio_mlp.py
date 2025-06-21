@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 
+# Local import support:
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import sounddevice as sd
@@ -33,6 +34,7 @@ def main(duration=3, sr=48000):
     label_encode = joblib.load(label_encoder_path)
     predicted_emotion = label_encode.inverse_transform([pred_idx])[0] #show the predicted emotion for the given audio from the mlp model
 
+    # 5. Print the predicted emotion based on the MLP model
     print(f" Predicted Emotion: {predicted_emotion}")
 
 if __name__ == "__main__":
