@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 def main():
+   # 1. Load CSV & encode labels
    csv_path = os.path.join("Data", "crema_intended_labels.csv")
    df       = pd.read_csv(csv_path)
    le       = LabelEncoder()
@@ -21,33 +22,23 @@ def main():
    # Drop duplicate paths just in case
    df = df.drop_duplicates(subset="path")
 
-
-   # Split based on unique file paths
+   # 2. Split based on unique file paths
    train_paths, val_paths = train_test_split(
    df["path"].unique(), test_size=0.2, random_state=5
    )
 
-
-   # Filter the DataFrame based on the split paths
+   # 3. Filter the DataFrame based on the split paths
    train_df = df[df["path"].isin(train_paths)].reset_index(drop=True)
    val_df   = df[df["path"].isin(val_paths)].reset_index(drop=True)
 
-
+   # 4. Extract features from a DataFrame split. If a cache file exists, load from it. 
+   #Otherwise, compute features and save them.
    def extract_features(df_split, cache_path):
-       """
-       Extract features from a DataFrame split.
-       If a cache file exists, load from it.
-       Otherwise, compute features and save them.
-
-
-       Returns:
-           X (np.ndarray): Flattened spectrogram features
-           y (np.ndarray): Integer labels
-       """
+      
        if os.path.exists(cache_path):
            print(f"🔁 Loading features from cache: {cache_path}")
            data = np.load(cache_path)
-           return data["X"], data["y"]
+           return data["X"], data["y"] # x is the flattened spectrogram features, y is the integer labels
   
        print(f"⚙️  Extracting features and caching to: {cache_path}")
        X, y = [], []
@@ -67,15 +58,13 @@ def main():
        np.savez(cache_path, X=X, y=y)
        return X, y
 
-
   
-  
-   # Check for overlap (always a good idea)
+   # 5. Check for overlap 
    overlap = set(train_df["path"]) & set(val_df["path"])
    print(f"Overlapping files: {len(overlap)}")
 
 
-   # Load or compute features
+   # 6. Load or compute features
    X_train, y_train = extract_features(train_df, "features_train.npz")
    X_val, y_val     = extract_features(val_df, "features_val.npz")
 
@@ -113,22 +102,22 @@ def main():
    )
 
 
-   # Scale features
+   # 7. Scale features
    scaler = StandardScaler()
    X_train_scaled = scaler.fit_transform(X_train)
    X_val_scaled   = scaler.transform(X_val)
 
 
-   # Fit and evaluate
+   # 8. Fit and evaluate
    knn.fit(X_train_scaled, y_train)
    val_acc = (knn.predict(X_val_scaled) == y_val).mean()
    print(f"k=14, metric= manhattan, weights= uniform → val acc: {val_acc:.4f}")
 
-
+   # 9. Save the KNN model
    joblib.dump(knn, os.path.join("Trained_Models", "knn.pkl"))
    print("kNN model saved.")
-
-
+   
+   # 10. Print number of training and validation files
    print(f"Number of training files: {len(train_df)}")
    print(f"Number of validation files: {len(val_df)}")
 
