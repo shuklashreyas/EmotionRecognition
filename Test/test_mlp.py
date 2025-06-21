@@ -10,21 +10,23 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, confusion_matrix
 
-
-# Local import support
+# Allow imports from project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Models.mlp_model import MLP, DEVICE, load_model
 from Utils.utils import extract_mfcc_from_path
 
+# 1. Define the Crema Dataset and load the data from the dataset
 class CremaDataset(Dataset):
     def __init__(self, dataframe, root_dir="Data"):
         self.data = dataframe.reset_index(drop=True)
         self.root_dir = root_dir  
-
+    
+    # Return the length of the dataset
     def __len__(self):
         return len(self.data)
 
+    # Get the label associated with the audio spectrogram from the dataset
     def __getitem__(self, idx):
         row = self.data.iloc[idx]
         full_path = os.path.join(self.root_dir, row["path"])
@@ -50,17 +52,18 @@ class CremaDataset(Dataset):
         return x, y
 
 def main():
+    #1. Load labels CSV
     print("Loading test data and label encoder...")
 
     csv_path = os.path.join("Data", "crema_intended_labels.csv")
     df = pd.read_csv(csv_path)
 
-    # Load encoder
+    # 2. Load saved LabelEncoder and encode
     encoder_path = os.path.join("Trained_Models", "label_encoder.pkl")
     label_encode = joblib.load(encoder_path)
     df["label_idx"] = label_encode.transform(df["emotion"])
 
-    # 10% test set
+    # 3. Split off a 10% test set
     _, test_df = train_test_split(
         df,
         test_size=0.1,
@@ -68,16 +71,17 @@ def main():
         random_state=42
     )
 
+    # 4. Create DataLoader for test set
     test_dataset = CremaDataset(test_df)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-    # Load MLP model
+    # 5. Load MLP model
     print("Loading trained MLP model...")
     model_path = os.path.join("Trained_Models", "mlp.pth")
     mlp_model = load_model(model_path)
     mlp_model.eval()
 
-    # Inference
+    # 6. Run inference
     all_preds = []
     all_labels = []
 
@@ -89,10 +93,11 @@ def main():
             all_preds.extend(preds)
             all_labels.extend(labels.numpy())
 
-    # Decode and print metrics
+    # 7. Decode label and print metrics
     y_true = label_encode.inverse_transform(all_labels)
     y_pred = label_encode.inverse_transform(all_preds)
 
+    # Print the classification report and confusion matrix based on the model's predictions
     print("\nClassification Report")
     print(classification_report(y_true, y_pred))
     print("\nConfusion Matrix ")
