@@ -49,6 +49,9 @@ def extract_mfcc(y, sr, n_mfcc=13):
     return np.mean(mfccs.T, axis=0)
 
 def extract_mfcc_from_path(path, sr=48000, n_mfcc=13, duration=None):
+    """
+    Given a path, load the audio and compute the MFCC vector of it
+    """
     y, sr = load_audio(path, sr, duration)
     
     return extract_mfcc(y, sr, n_mfcc)
