@@ -17,7 +17,6 @@ from torch.utils.data import Dataset, DataLoader
 from multiprocessing import freeze_support
 from tqdm import tqdm
 
-# Make sure these point to your packages
 from Utils.utils import extract_spectrogram_from_path
 from Models.cnn_model import CNNModel, DEVICE
 
@@ -36,7 +35,7 @@ def main():
         df, test_size=0.2, stratify=df["label_idx"], random_state=42
     )
 
-    # 3. Dataset & DataLoader
+    # 3. SpectrogramDataset & DataLoader
     class SpectrogramDataset(Dataset):
         def __init__(self, df, root_dir="Data/AudioWAV", sr=48000):
             self.df   = df.reset_index(drop=True)
@@ -55,7 +54,7 @@ def main():
             return spec_tens, label
 
     batch_size = 32
-    # For debugging, set num_workers=0; you can bump this up once it’s working
+    # For debugging, set num_workers=0
     train_loader = DataLoader(SpectrogramDataset(train_df),
                               batch_size=batch_size, shuffle=True,
                               num_workers=0)
@@ -98,11 +97,13 @@ def main():
 
         print(f"Epoch {epoch}: Train Loss={train_loss:.4f}, Val Acc={val_acc:.4f}")
 
+        # Get the best accuracy and save the model with the best accuracy
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             torch.save(model.state_dict(), model_path)
             print(f"  → Saved new best model (Val Acc={val_acc:.4f})")
 
+    # Return the best accuracy
     print("Training complete. Best Val Acc:", best_val_acc)
 
 
