@@ -36,6 +36,15 @@ pip install -r requirements.txt
 pip install streamlit
 pip install streamlit-webrtc
 pip install huggingface_hub
+pip install soundfile
+pip install torch torchvision torchaudio
+
+4) add secrets to the environment
+(Mac)
+export HUGGINGFACE_HUB_TOKEN=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
+
+(Windows) 
+setx HUGGINGFACE_HUB_TOKEN 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
 ```
 
 ## Running the Program
