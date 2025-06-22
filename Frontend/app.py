@@ -80,7 +80,7 @@ st.markdown("""
 def display_prediction_card(emotion: str):
     EMOTION_EMOJI_MAP = {
         "happy": "😄", "sad": "😢", "angry": "😠", "fear": "😨",
-        "disgust": "🤢", "neutral": "😐", "calm": "😌", "surprised": "😲"
+        "disgust": "🤢", "neutral": "😐"
     }
     emoji = EMOTION_EMOJI_MAP.get(emotion, "🤔")
     card_html = f"""

@@ -1,6 +1,8 @@
-# EmotionRecognition
+# EmotionRecognition 
 
 Build a multiclass emotion‐recognition system that classifies six emotional states—anger, disgust, fear, happiness, neutral, and sadness—from short voice recordings by extracting audio features (e.g., MFCCs and mel-spectrograms) and training four separate models (SVM, KNN, MLP, and CNN) to compare their performance.
+
+🤢 😄 😢 😠 😨 😐
 
 ## Project Structure
 
@@ -14,7 +16,6 @@ EmotionRecognition/
 ├── Frontend/               # Streamlit app code
 ├── Test/                   # Unit and integration tests
 ├── requirements.txt        # Python dependencies
-└── README.md              # Project overview and instructions
 ```
 
 ## Setup
@@ -41,19 +42,17 @@ streamlit run Frontend/app.py
 
 Open your browser and navigate to: http://localhost:8501
 
-## Frontend View
+## Frontend View & Usage
 
-![Upload Audio Clip](./frontend1.png)
-![Record Audio Clip](./frontend2.png)
+### Upload Audio Feature
+![Upload Audio Clip](./frontend1.png "Upload Audio Clip")
 
-## Usage
+**Upload Audio tab** → Choose a WAV file & model → See the predicted emotion
 
-### In your browser:
-- **Upload Audio tab** → Choose a WAV file & model → See the predicted emotion
-- **Record Audio tab** → Click Start/Stop → Save & Predict → Review your recording + prediction
+### Record Audio Feature  
+![Record Audio Clip](./frontend2.png "Record Audio Clip")
 
-The interface provides real-time emotion recognition from both uploaded audio files and live recordings, allowing you to test different models and compare their predictions.
-
+**Record Audio tab** → Click Start/Stop → Save & Predict → Review your recording + prediction
 
 ## Model Performance
 
@@ -127,7 +126,7 @@ This project uses the **CREMA-D** (Crowdsourced Emotional Multimodal Actors Data
 - [Shreyas Shukla](https://github.com/shuklashreyas) - CNN, Code Modularity, Frontend
 - [Pavithra Ponnolu](https://github.com/pponn) - SVM, Research
 - [Kashvi Mehta](https://github.com/kashvime) - MLP, Dataset Extraction
-- [Josh Len](https://github.com/Josh-Len) - CNN, Research
+- [Josh Len](https://github.com/Josh-Len) - KNN, Research
 
 ## Demo & Slides & Final Report
 
