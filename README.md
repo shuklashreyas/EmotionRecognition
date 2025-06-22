@@ -18,6 +18,12 @@ EmotionRecognition/
 ├── requirements.txt        # Python dependencies
 ```
 
+## Prerequistes + Notes about setup
+```bash
+1) Our KNN Model is larger than 100MB and therefore we had to use HuggingFace to upload our model
+2) Python Version : Python 3.10 , Some issues with installing dependecies if not using this version
+```
+
 ## Setup
 
 ```bash
@@ -145,7 +151,7 @@ This project uses the **CREMA-D** (Crowdsourced Emotional Multimodal Actors Data
 
 - [Video Demo](https://drive.google.com/file/d/1Bl0TcKuDguN_U-6x9Dm1zW89pRkIFui5/view?usp=sharing)
 - [Google Slideshow Presentation](https://drive.google.com/file/d/1FuzVh6-ys5HXoX531fwhe3_gbTbmYSmK/view?usp=sharing)
-- Final Report
+- [Final Report](https://drive.google.com/file/d/1CY5QZDSL-jwJsDGijRdMMxFxOPgXSxVw/view?usp=sharing)
 
 ## Future Work
 
