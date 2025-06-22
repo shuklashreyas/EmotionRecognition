@@ -23,6 +23,7 @@ EmotionRecognition/
 ```bash
 1) Clone repo
 git clone https://github.com/shuklashreyas/EmotionRecognition
+cd EmotionRecognition
 
 2) Create conda environment
 conda create -n emotion-voice python=3.10 -y
